@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portal pessoal de suporte e gerenciamento de scripts SQL.">
+  <meta name="theme-color" content="#e4f3fb">
+  <title>Portal Suporte N3</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">Ir para o conteúdo</a>
+
+  <div class="portal" id="portalView">
+    <aside class="sidebar" id="sidebar">
+      <div class="side-brand"><span>SN</span><div><b>Portal</b><small>Suporte N3</small></div><button class="icon-button side-close" id="closeSidebar" aria-label="Fechar menu">×</button></div>
+      <nav class="side-nav" aria-label="Menu principal">
+        <button class="nav-item active" data-page="home"><span class="nav-icon">⌂</span><b data-i18n="home">Início</b></button>
+        <p class="nav-label" data-i18n="workspace">ESPAÇO DE TRABALHO</p>
+        <button class="nav-item" data-page="scripts"><span class="nav-icon">⌘</span><b data-i18n="allScripts">Todos os scripts</b><em id="allCount">0</em></button>
+        <div class="nav-section-head"><span data-i18n="folders">PASTAS</span><button id="addFolderButton" aria-label="Adicionar pasta">＋</button></div>
+        <div id="folderList" class="tree-list"></div>
+        <div class="nav-section-head"><span data-i18n="categories">CATEGORIAS</span><button id="addCategoryButton" aria-label="Adicionar categoria">＋</button></div>
+        <div id="categoryList" class="tree-list category-list"></div>
+      </nav>
+    </aside>
+    <div class="mobile-shade" id="mobileShade" hidden></div>
+
+    <div class="portal-main">
+      <header class="topbar">
+        <button class="icon-button menu-button" id="menuButton" aria-label="Abrir menu">☰</button>
+        <div class="breadcrumb"><span id="breadcrumb">PORTAL / INÍCIO</span><b id="pageHeading">Olá, Suporte N3!</b></div>
+        <div class="top-actions">
+          <label class="global-search" id="globalSearchWrap"><span>⌕</span><input id="searchInput" type="search" placeholder="Buscar scripts..." autocomplete="off"><kbd>Ctrl K</kbd></label>
+          <button class="top-button" id="newScriptButton"><span>＋</span><span data-i18n="newScript">Novo script</span></button>
+          <button class="square-button" id="syncButton" title="Sincronizar" aria-label="Sincronizar" hidden>↻</button>
+          <button class="square-button" id="languageButton" title="Idioma">PT</button>
+          <button class="square-button" id="themeButton" title="Alternar tema" aria-label="Alternar tema">◐</button>
+          <button class="square-button" id="settingsButton" title="Configurações" aria-label="Configurações">⚙</button>
+        </div>
+      </header>
+
+      <main id="mainContent">
+        <section class="page active" id="homePage">
+          <div class="welcome-banner"><div><span class="live-dot"></span><b>AMBIENTE OPERACIONAL</b><h1>Olá, Suporte N3!</h1><p>Acesse seus scripts e ferramentas em um só lugar.</p></div><div class="sql-mark">SQL</div></div>
+          <div class="dashboard-grid">
+            <div class="dashboard-main-column">
+              <section><div class="section-title notice-title"><span>●</span><h2>AVISOS IMPORTANTES</h2></div><article class="notice-card"><div><small>NOVIDADE</small><h3>Portal de scripts disponível para a equipe de suporte</h3><p>Use o menu lateral para organizar scripts em pastas e categorias.</p></div><time id="todayBadge"></time></article></section>
+              <section><div class="section-title new-title"><span>ϟ</span><h2>ACESSOS DO SISTEMA</h2></div><div class="access-grid">
+                <button class="access-card" data-go="scripts"><span class="access-icon blue">⌘</span><div><b>Todos os scripts</b><small>Consulte sua biblioteca</small></div><span>→</span></button>
+                <button class="access-card" id="quickNewScript"><span class="access-icon violet">＋</span><div><b>Novo script</b><small>Cadastre um comando</small></div><span>→</span></button>
+                <button class="access-card" id="quickImport"><span class="access-icon amber">⇣</span><div><b>Importar banco</b><small>Restaurar arquivo JSON</small></div><span>→</span></button>
+                <button class="access-card" id="quickBackup"><span class="access-icon green">⇡</span><div><b>Backup</b><small>Exportar biblioteca</small></div><span>→</span></button>
+              </div></section>
+            </div>
+            <aside class="dashboard-side-column">
+              <section><div class="section-title tip-title"><span>◉</span><h2>DICA DO DIA</h2></div><div class="tip-card"><span>01</span><p>Crie pastas por cliente e use categorias para identificar o tipo de comando SQL.</p></div></section>
+              <section><div class="section-title stats-title"><span>≛</span><h2>RESUMO</h2></div><div class="stats-card"><div><span>Scripts cadastrados</span><b id="statsScripts">0</b></div><div><span>Pastas</span><b id="statsFolders">0</b></div><div><span>Categorias</span><b id="statsCategories">0</b></div></div></section>
+            </aside>
+          </div>
+        </section>
+
+        <section class="page" id="scriptsPage">
+          <div class="content-heading"><div><p class="eyebrow">BIBLIOTECA SQL</p><h1 id="libraryTitle">Todos os scripts</h1><p id="librarySubtitle">Gerencie e consulte seus comandos.</p></div><div class="content-actions">
+            <button class="ghost-button" id="importTxtButton">Importar .txt</button><button class="ghost-button" id="importDatabaseButton">Importar banco</button><button class="ghost-button" id="backupButton">Backup</button><button class="primary-button" id="newScriptContentButton">＋ Novo script</button>
+          </div></div>
+          <div class="filter-strip"><label><span>⌕</span><input id="contentSearchInput" type="search" placeholder="Buscar por nome ou conteúdo..."></label><select id="folderFilter"><option value="">Todas as pastas</option></select><select id="categoryFilter"><option value="">Todas as categorias</option></select><span id="resultCount">0 scripts</span></div>
+          <div class="script-grid" id="scriptGrid"></div>
+          <div class="empty-state" id="emptyState" hidden><span>⌘</span><h2>Nenhum script encontrado</h2><p>Crie um novo script ou importe seu banco de dados.</p><button class="primary-button" id="emptyNewButton">＋ Novo script</button></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <dialog id="scriptDialog" class="wide-dialog"><form id="scriptForm"><div class="dialog-head"><div><p class="eyebrow">EDITOR SQL</p><h2 id="scriptDialogTitle">Novo script</h2></div><button type="button" class="icon-button" data-close="scriptDialog">×</button></div><input id="scriptId" type="hidden"><div class="script-form-grid"><label class="field">Nome do script<input id="scriptName" maxlength="100" required></label><label class="field">Categoria<select id="scriptCategory"></select></label><label class="field">Pasta<select id="scriptFolder"></select></label><div class="editor-meta"><span id="editorInfo">0 linhas · 0 caracteres</span></div><label class="field code-field">Conteúdo SQL<textarea id="scriptCode" rows="18" required spellcheck="false" placeholder="SELECT * FROM ..."></textarea></label></div><div class="dialog-actions"><button type="button" class="ghost-button" data-close="scriptDialog">Cancelar</button><button type="submit" class="primary-button">Salvar</button></div></form></dialog>
+
+  <dialog id="viewerDialog" class="wide-dialog"><div class="dialog-head"><div><p class="eyebrow" id="viewerMeta"></p><h2 id="viewerTitle"></h2></div><div><button class="square-button" id="highlightButton" title="Realçar SQL" aria-label="Realçar SQL">◉</button><button type="button" class="icon-button" data-close="viewerDialog">×</button></div></div><div class="viewer-details" id="viewerDetails"></div><pre class="code-view"><code id="viewerCode"></code></pre><div class="dialog-actions"><button class="danger-button" id="deleteScriptButton">Excluir</button><span class="dialog-spacer"></span><button class="ghost-button" id="copyScriptButton">Copiar</button><button class="primary-button" id="editScriptButton">Alterar</button></div></dialog>
+
+  <dialog id="folderDialog"><form id="folderForm"><div class="dialog-head"><div><p class="eyebrow">ORGANIZAÇÃO</p><h2 id="folderDialogTitle">Nova pasta</h2></div><button type="button" class="icon-button" data-close="folderDialog">×</button></div><input id="folderId" type="hidden"><label class="field">Nome da pasta<input id="folderName" required maxlength="60"></label><label class="field">Pasta superior<select id="parentFolder"></select></label><div class="dialog-actions"><button type="button" class="ghost-button" data-close="folderDialog">Cancelar</button><button class="primary-button" type="submit">Salvar</button></div></form></dialog>
+
+  <dialog id="categoryDialog"><form id="categoryForm"><div class="dialog-head"><div><p class="eyebrow">CLASSIFICAÇÃO</p><h2 id="categoryDialogTitle">Nova categoria</h2></div><button type="button" class="icon-button" data-close="categoryDialog">×</button></div><input id="categoryId" type="hidden"><label class="field">Nome da categoria<input id="categoryName" required maxlength="40"></label><label class="field">Cor<input id="categoryColor" type="color" value="#178fd1"></label><div class="dialog-actions"><button type="button" class="ghost-button" data-close="categoryDialog">Cancelar</button><button class="primary-button" type="submit">Salvar</button></div></form></dialog>
+
+  <dialog id="settingsDialog"><form id="settingsForm"><div class="dialog-head"><div><p class="eyebrow">PORTAL</p><h2>Configurações</h2></div><button type="button" class="icon-button" data-close="settingsDialog">×</button></div><label class="field">URL remota do banco<input id="remoteUrl" type="url" placeholder="https://exemplo.com/database.json"></label><label class="check-field"><input id="autoSync" type="checkbox"><span>Sincronizar automaticamente ao abrir</span></label><div class="settings-note">A URL deve apontar para um arquivo JSON público no mesmo formato do backup do portal.</div><div class="dialog-actions"><button type="button" class="ghost-button" data-close="settingsDialog">Cancelar</button><button class="primary-button" type="submit">Salvar</button></div></form></dialog>
+
+  <div class="context-menu" id="contextMenu" hidden></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <input id="databaseFileInput" type="file" accept="application/json,.json" hidden><input id="txtFileInput" type="file" accept="text/plain,.txt" hidden>
+  <script src="app.js"></script>
+</body>
+</html>
